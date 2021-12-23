@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getUser } from "../services/getUser";
-import database from "../storage/firebase";
 import { ref, onValue } from "firebase/database";
+import database from "../storage/firebase";
 
 const Contacts = () => {
   const [list, setList] = useState([]);
@@ -12,14 +12,20 @@ const Contacts = () => {
 
       onValue(ref(database, "/contacts/" + userId), (snapshot) => {
         setList(snapshot.val());
+        console.log(snapshot.val());
       });
     };
 
     fetchContacts();
   }, []);
 
-  
-  return <></>;
+  return (
+    <View>
+      {Object.keys(list).map((key) => {
+        return <Text key={key}>{list[key].email}</Text>;
+      })}
+    </View>
+  );
 };
 
 export default Contacts;

@@ -20,7 +20,7 @@ const AddContact = () => {
         if (snapshot.exists()) {
           const roomId = Date.now();
 
-          set(ref(database, "contacts/" + currentUser), {
+          set(ref(database, "contacts/" + currentUser + "/" + roomId), {
             email: mail,
           })
             .then(() => {
@@ -30,10 +30,6 @@ const AddContact = () => {
             .catch((error) => {
               console.log({ error });
             });
-
-          // set(ref(database, "rooms/" + currentUser), {
-          //   id: roomId,
-          // })
         } else console.log("User Not found");
       },
       {

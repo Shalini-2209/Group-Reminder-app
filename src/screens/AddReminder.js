@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View } from "react-native";
 import database from "../storage/firebase";
 import { getUser } from "../services/getUser";
@@ -7,39 +7,47 @@ import { TextInput, Button } from "react-native-paper";
 
 const AddReminder = () => {
   const [reminder, setReminder] = useState("");
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    const fetchContacts = async () => {
+      const userId = await getUser();
+
+      onValue(ref(database, "/contacts/" + userId), (snapshot) => {
+        setList(snapshot.val());
+      });
+    };
+
+    fetchContacts();
+  }, []);
 
   const addReminder = async () => {
-    let data = mail.split("@");
-    const contactId = data[0];
+    let reminderId = Date.now();
 
     const currentUser = await getUser();
 
-    // onValue(
-    //   ref(database, "/users/" + contactId),
-    //   (snapshot) => {
-    //     if (snapshot.exists()) {
-    //       set(ref(database, "contacts/" + currentUser), {
-    //         email: mail,
-    //       })
-    //         .then(() => {
-    //           setMail("");
-    //           alert("Reminder added!");
-    //         })
-    //         .catch((error) => {
-    //           console.log({ error });
-    //         });
-    //     } else console.log("User Not found");
-    //   },
-    //   {
-    //     onlyOnce: true,
-    //   }
-    // );
+    set(ref(database, "reminders/" + currentUser + "/" + reminderId), {
+      msg: reminder,
+      owner: currentUser,
+    });
+
+    Object.keys(list).map((key) => {
+      let data = list[key].email.split("@");
+      const contactId = data[0];
+
+      set(ref(database, "reminders/" + contactId + "/" + reminderId), {
+        msg: reminder,
+        owner: currentUser,
+      });
+    });
+
+    setReminder("");
   };
 
   return (
     <View>
       <TextInput
-        label="Email"
+        label="Enter Reminder text"
         value={reminder}
         onChangeText={(text) => setReminder(text)}
       />
