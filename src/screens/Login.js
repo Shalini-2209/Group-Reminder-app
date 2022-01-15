@@ -1,17 +1,20 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import database from "../storage/firebase";
 import { ref, onValue } from "firebase/database";
+import { UserContext } from "../navigation/RootStack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TextInput, Button, Title } from "react-native-paper";
 
-const Login = () => {
+const Login = ({ navigation }) => {
   const initalState = {
     mail: "",
     pwd: "",
   };
 
   const [form, setForm] = useState(initalState);
+
+  const setUser = useContext(UserContext);
 
   const storeUser = async (key, val) => {
     await AsyncStorage.setItem(key, val);
@@ -32,7 +35,8 @@ const Login = () => {
             ) {
               storeUser("user", userId);
               alert("Logged in successfully!");
-            } else console.log("User Not found");
+              setUser(true);
+            } else alert("User Not found");
           }
         },
         {
@@ -44,7 +48,6 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
-      <Title>Login </Title>
       <TextInput
         label="Email"
         value={form.mail}
@@ -66,6 +69,17 @@ const Login = () => {
       >
         Login
       </Button>
+      <Title
+        style={{
+          fontSize: 15,
+          color: "#6200ee",
+          textDecorationLine: "underline",
+          marginTop: "2%",
+        }}
+        onPress={() => navigation.push("Register")}
+      >
+        New? Register
+      </Title>
     </View>
   );
 };
