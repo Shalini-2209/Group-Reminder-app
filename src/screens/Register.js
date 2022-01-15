@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import database from "../storage/firebase";
-import {  ref, set } from "firebase/database";
+import { ref, set } from "firebase/database";
 import { TextInput, Button, Title } from "react-native-paper";
 
 const Register = () => {
@@ -25,7 +25,8 @@ const Register = () => {
         })
           .then(() => {
             setForm(initalState);
-            alert("Record inserted;");
+            setCpass("");
+            alert("Record inserted!");
           })
           .catch((error) => {
             console.log({ error });
