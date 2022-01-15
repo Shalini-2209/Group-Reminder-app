@@ -45,7 +45,13 @@ const AddReminder = () => {
   };
 
   return (
-    <View>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <TextInput
         label="Enter Reminder text"
         value={reminder}

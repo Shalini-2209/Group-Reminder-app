@@ -39,7 +39,13 @@ const AddContact = () => {
   };
 
   return (
-    <View>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <TextInput
         label="Email"
         value={mail}

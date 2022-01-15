@@ -20,11 +20,25 @@ const MyReminders = () => {
   }, []);
 
   return (
-    <View>
-      {Object.keys(reminders).map((key) => {
-        return <Text key={key}>{reminders[key].msg}</Text>;
-      })}
-    </View>
+    <>
+      {reminders ? (
+        <View>
+          {Object.keys(reminders).map((key) => {
+            return <Text key={key}>{reminders[key].msg}</Text>;
+          })}
+        </View>
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text>Nothing to show! </Text>
+        </View>
+      )}
+    </>
   );
 };
 
